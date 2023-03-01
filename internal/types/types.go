@@ -5,3 +5,9 @@ type Search struct {
 	Region    string `json:"region"`
 	TimeRange string `json:"time_range"`
 }
+
+type Result struct {
+	Title   string `json:"title"`
+	Link    string `json:"link"`
+	Snippet string `json:"snippet"`
+}

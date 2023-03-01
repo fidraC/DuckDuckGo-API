@@ -9,6 +9,8 @@ import (
 
 	"github.com/acheong08/DuckDuckGo-API/internal/types"
 	"github.com/acheong08/DuckDuckGo-API/internal/utils"
+	"github.com/anaskhan96/soup"
+	_ "github.com/anaskhan96/soup"
 )
 
 func Get_html(search types.Search) (string, error) {
@@ -54,4 +56,29 @@ func Get_html(search types.Search) (string, error) {
 		return "", err
 	}
 	return string(bodyBytes), nil
+}
+
+func Parse_html(html string) ([]types.Result, error) {
+	// Results is an array of Result structs
+	var final_results []types.Result = []types.Result{}
+	// Parse
+	doc := soup.HTMLParse(html)
+	// Find each result__body
+	result_bodies := doc.FindAll("div", "class", "result__body")
+	// Loop through each result__body
+	for _, item := range result_bodies {
+		// Get text of result__title
+		var title string = item.Find("a", "class", "result__a").Text()
+		// Get href of result__a
+		var link string = item.Find("a", "class", "result__a").Attrs()["href"]
+		// Get text of result__snippet
+		var snippet string = item.Find("div", "class", "result__snippet").Text()
+		// Append to final_results
+		final_results = append(final_results, types.Result{
+			Title:   title,
+			Link:    link,
+			Snippet: snippet,
+		})
+	}
+	return final_results, nil
 }
