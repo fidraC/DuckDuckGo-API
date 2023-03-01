@@ -1,7 +1,6 @@
 package duckduckgo
 
 import (
-	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -33,6 +32,8 @@ func get_html(search types.Search) (string, error) {
 		},
 		Header: map[string][]string{
 			"Content-Type": {"application/x-www-form-urlencoded"},
+			"Accept":       {"text/html"},
+			"User-Agent":   {"Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0"},
 		},
 		Body: utils.StringToReadCloser(form),
 	}
@@ -42,13 +43,14 @@ func get_html(search types.Search) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if response.StatusCode != 200 {
-		return "", errors.New("Status code: " + strconv.Itoa(response.StatusCode))
-	}
 	// Read response body
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		return "", err
+	}
+	// Check status code
+	if response.StatusCode != 200 {
+		return "", errors.New("Status code: " + strconv.Itoa(response.StatusCode) + " Body: " + string(bodyBytes))
 	}
 	// Close response body
 	err = response.Body.Close()
@@ -68,12 +70,11 @@ func parse_html(html string) ([]types.Result, error) {
 	// Loop through each result__body
 	for _, item := range result_bodies {
 		// Get text of result__title
-		var title string = item.Find("a", "class", "result__a").Text()
-		println(title)
+		var title string = item.Find("a", "class", "result__a").FullText()
 		// Get href of result__a
 		var link string = item.Find("a", "class", "result__a").Attrs()["href"]
 		// Get text of result__snippet
-		var snippet string = item.Find("a", "class", "result__snippet").Text()
+		var snippet string = item.Find("a", "class", "result__snippet").FullText()
 		// Append to final_results
 		final_results = append(final_results, types.Result{
 			Title:   title,
@@ -84,19 +85,14 @@ func parse_html(html string) ([]types.Result, error) {
 	return final_results, nil
 }
 
-func Get_results(search types.Search) (string, error) {
+func Get_results(search types.Search) ([]types.Result, error) {
 	html, err := get_html(search)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	results, err := parse_html(html)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	// Get JSON
-	json_results, err := json.Marshal(results)
-	if err != nil {
-		return "", err
-	}
-	return string(json_results), nil
+	return results, nil
 }
