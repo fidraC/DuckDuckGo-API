@@ -1,6 +1,7 @@
 package duckduckgo
 
 import (
+	"encoding/json"
 	"errors"
 	"io"
 	"net/http"
@@ -68,10 +69,11 @@ func parse_html(html string) ([]types.Result, error) {
 	for _, item := range result_bodies {
 		// Get text of result__title
 		var title string = item.Find("a", "class", "result__a").Text()
+		println(title)
 		// Get href of result__a
 		var link string = item.Find("a", "class", "result__a").Attrs()["href"]
 		// Get text of result__snippet
-		var snippet string = item.Find("div", "class", "result__snippet").Text()
+		var snippet string = item.Find("a", "class", "result__snippet").Text()
 		// Append to final_results
 		final_results = append(final_results, types.Result{
 			Title:   title,
@@ -82,14 +84,19 @@ func parse_html(html string) ([]types.Result, error) {
 	return final_results, nil
 }
 
-func Get_results(search types.Search) ([]types.Result, error) {
+func Get_results(search types.Search) (string, error) {
 	html, err := get_html(search)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	results, err := parse_html(html)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-	return results, nil
+	// Get JSON
+	json_results, err := json.Marshal(results)
+	if err != nil {
+		return "", err
+	}
+	return string(json_results), nil
 }
