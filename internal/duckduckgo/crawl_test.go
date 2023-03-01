@@ -13,12 +13,9 @@ func TestGet_html(t *testing.T) {
 		Region:    "",
 		TimeRange: "",
 	}
-	response, err := duckduckgo.Get_html(search)
+	response, err := duckduckgo.Get_results(search)
 	if err != nil {
 		t.Errorf("Error: %s", err)
-	}
-	if response == "" {
-		t.Errorf("Response is empty")
 	}
 	t.Log(response)
 }

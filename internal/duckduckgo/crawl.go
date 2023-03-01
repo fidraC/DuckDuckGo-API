@@ -13,7 +13,7 @@ import (
 	_ "github.com/anaskhan96/soup"
 )
 
-func Get_html(search types.Search) (string, error) {
+func get_html(search types.Search) (string, error) {
 	var base_url string = "html.duckduckgo.com"
 	// POST form data
 	var formdata = map[string]string{
@@ -58,7 +58,7 @@ func Get_html(search types.Search) (string, error) {
 	return string(bodyBytes), nil
 }
 
-func Parse_html(html string) ([]types.Result, error) {
+func parse_html(html string) ([]types.Result, error) {
 	// Results is an array of Result structs
 	var final_results []types.Result = []types.Result{}
 	// Parse
@@ -81,4 +81,16 @@ func Parse_html(html string) ([]types.Result, error) {
 		})
 	}
 	return final_results, nil
+}
+
+func Get_results(search types.Search) ([]types.Result, error) {
+	html, err := get_html(search)
+	if err != nil {
+		return nil, err
+	}
+	results, err := parse_html(html)
+	if err != nil {
+		return nil, err
+	}
+	return results, nil
 }
