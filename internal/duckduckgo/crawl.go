@@ -10,7 +10,6 @@ import (
 	"github.com/acheong08/DuckDuckGo-API/internal/types"
 	"github.com/acheong08/DuckDuckGo-API/internal/utils"
 	"github.com/anaskhan96/soup"
-	_ "github.com/anaskhan96/soup"
 )
 
 func get_html(search types.Search) (string, error) {
