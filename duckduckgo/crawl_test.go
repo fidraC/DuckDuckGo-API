@@ -3,8 +3,8 @@ package duckduckgo_test
 import (
 	"testing"
 
-	"github.com/acheong08/DuckDuckGo-API/internal/duckduckgo"
-	types "github.com/acheong08/DuckDuckGo-API/internal/types"
+	"github.com/acheong08/DuckDuckGo-API/duckduckgo"
+	types "github.com/acheong08/DuckDuckGo-API/types"
 )
 
 func TestGet_html(t *testing.T) {

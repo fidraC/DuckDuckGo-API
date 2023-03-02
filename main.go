@@ -6,8 +6,8 @@ import (
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
 
-	"github.com/acheong08/DuckDuckGo-API/internal/duckduckgo"
-	"github.com/acheong08/DuckDuckGo-API/internal/types"
+	"github.com/acheong08/DuckDuckGo-API/duckduckgo"
+	"github.com/acheong08/DuckDuckGo-API/types"
 )
 
 func main() {

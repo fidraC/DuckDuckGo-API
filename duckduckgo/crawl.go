@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/acheong08/DuckDuckGo-API/internal/types"
-	"github.com/acheong08/DuckDuckGo-API/internal/utils"
+	"github.com/acheong08/DuckDuckGo-API/types"
+	"github.com/acheong08/DuckDuckGo-API/utils"
 	"github.com/anaskhan96/soup"
 )
 
