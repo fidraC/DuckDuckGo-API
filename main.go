@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"strconv"
 
 	"github.com/fvbock/endless"
 	"github.com/gin-gonic/gin"
@@ -48,6 +49,15 @@ func main() {
 		if search.Query == "" {
 			ctx.JSON(400, gin.H{"error": "Query is required"})
 			return
+		}
+		// Get limit and check if it's a number
+		limit := ctx.Query("limit")
+		if limit != "" {
+			if _, err := strconv.Atoi(limit); err != nil {
+				ctx.JSON(400, gin.H{"error": "Limit must be a number"})
+				return
+			}
+			search.Limit, _ = strconv.Atoi(limit)
 		}
 		// Get results
 		results, err := duckduckgo.Get_results(search)
