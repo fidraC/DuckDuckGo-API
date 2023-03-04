@@ -13,9 +13,6 @@ import (
 func main() {
 	HOST := os.Getenv("HOST")
 	PORT := os.Getenv("PORT")
-	if HOST == "" {
-		HOST = "127.0.0.1"
-	}
 	if PORT == "" {
 		PORT = "8080"
 	}
