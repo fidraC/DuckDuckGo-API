@@ -25,7 +25,12 @@ func main() {
 		// Map request to Search struct
 		var search types.Search
 		if err := ctx.ShouldBindJSON(&search); err != nil {
-			ctx.JSON(400, gin.H{"error": err.Error()})
+			ctx.JSON(400, gin.H{"error": err.Error(), "details": "Could not bind JSON"})
+			return
+		}
+		// Ensure query is set
+		if search.Query == "" {
+			ctx.JSON(400, gin.H{"error": "Query is required"})
 			return
 		}
 		// Get results
