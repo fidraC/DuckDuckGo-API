@@ -44,7 +44,7 @@ func main() {
 			results = results[:search.Limit]
 		}
 		// Return results
-		ctx.JSON(200, gin.H{"results": results})
+		ctx.JSON(200, results)
 	})
 	handler.GET("/search", func(ctx *gin.Context) {
 		// Map request to Search struct
