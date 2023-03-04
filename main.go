@@ -39,6 +39,10 @@ func main() {
 			ctx.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
+		// Limit
+		if search.Limit > 0 && search.Limit < len(results) {
+			results = results[:search.Limit]
+		}
 		// Return results
 		ctx.JSON(200, gin.H{"results": results})
 	})
