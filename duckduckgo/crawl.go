@@ -7,12 +7,12 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/acheong08/DuckDuckGo-API/types"
+	"github.com/acheong08/DuckDuckGo-API/typings"
 	"github.com/acheong08/DuckDuckGo-API/utils"
 	"github.com/anaskhan96/soup"
 )
 
-func get_html(search types.Search) (string, error) {
+func get_html(search typings.Search) (string, error) {
 	var base_url string = "html.duckduckgo.com"
 	// POST form data
 	var formdata = map[string]string{
@@ -60,9 +60,9 @@ func get_html(search types.Search) (string, error) {
 	return string(bodyBytes), nil
 }
 
-func parse_html(html string) ([]types.Result, error) {
+func parse_html(html string) ([]typings.Result, error) {
 	// Results is an array of Result structs
-	var final_results []types.Result = []types.Result{}
+	var final_results []typings.Result = []typings.Result{}
 	// Parse
 	doc := soup.HTMLParse(html)
 	// Find each result__body
@@ -76,7 +76,7 @@ func parse_html(html string) ([]types.Result, error) {
 		// Get text of result__snippet
 		var snippet string = item.Find("a", "class", "result__snippet").FullText()
 		// Append to final_results
-		final_results = append(final_results, types.Result{
+		final_results = append(final_results, typings.Result{
 			Title:   title,
 			Link:    link,
 			Snippet: snippet,
@@ -85,7 +85,7 @@ func parse_html(html string) ([]types.Result, error) {
 	return final_results, nil
 }
 
-func Get_results(search types.Search) ([]types.Result, error) {
+func Get_results(search typings.Search) ([]typings.Result, error) {
 	html, err := get_html(search)
 	if err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-package types
+package typings
 
 type Search struct {
 	Query     string `json:"query"`

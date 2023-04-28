@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/acheong08/DuckDuckGo-API/duckduckgo"
-	"github.com/acheong08/DuckDuckGo-API/types"
+	"github.com/acheong08/DuckDuckGo-API/typings"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 	})
 	handler.POST("/search", func(ctx *gin.Context) {
 		// Map request to Search struct
-		var search types.Search
+		var search typings.Search
 		if err := ctx.ShouldBindJSON(&search); err != nil {
 			ctx.JSON(400, gin.H{"error": err.Error(), "details": "Could not bind JSON"})
 			return
@@ -48,7 +48,7 @@ func main() {
 	})
 	handler.GET("/search", func(ctx *gin.Context) {
 		// Map request to Search struct
-		var search types.Search
+		var search typings.Search
 		// Get query
 		search.Query = ctx.Query("query")
 		// Get region

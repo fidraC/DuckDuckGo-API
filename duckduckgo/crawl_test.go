@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"github.com/acheong08/DuckDuckGo-API/duckduckgo"
-	types "github.com/acheong08/DuckDuckGo-API/types"
+	"github.com/acheong08/DuckDuckGo-API/typings"
 )
 
 func TestGet_html(t *testing.T) {
-	search := types.Search{
+	search := typings.Search{
 		Query:     "test",
 		Region:    "",
 		TimeRange: "",
